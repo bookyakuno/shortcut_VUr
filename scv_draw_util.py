@@ -6,7 +6,7 @@ class SCV_Draw_Util:
 
     def __init__(self, context):
         self.x_off = 14
-        self.y_off = 50
+        self.y_off = 160
         self.width_all = 70
 
         self.indices     = ((0, 1, 2), (0, 2, 3))
@@ -15,8 +15,8 @@ class SCV_Draw_Util:
         cb  = context.scene.color_buttons
         cba = context.scene.color_buttons_active
 
-        self.color        = (cb.r, cb.g, cb.b, 1.0)
-        self.color_active = (cba.r, cba.g, cba.b, 1.0)
+        self.color        = (cb[0], cb[1], cb[2], cb[3])
+        self.color_active = (cba[0], cba[1], cba[2], cba[3])
 
     def create_batches(self, context):
 
@@ -28,9 +28,19 @@ class SCV_Draw_Util:
             self.x_off = ((context.region.width - self.width_all) / 2.0) - 1
 
         # bottom left, top left, top right, bottom right
-        self.vertices_left   = ((self.x_off,      20 + self.y_off), (self.x_off,      50 + self.y_off), (self.x_off + 20, 50 + self.y_off), (self.x_off + 20, 20 + self.y_off))
-        self.vertices_right  = ((self.x_off + 50, 20 + self.y_off), (self.x_off + 50, 50 + self.y_off), (self.x_off + 70, 50 + self.y_off), (self.x_off + 70, 20 + self.y_off))
-        self.vertices_middle = ((self.x_off + 30, 30 + self.y_off), (self.x_off + 30, 50 + self.y_off), (self.x_off + 40, 50 + self.y_off), (self.x_off + 40, 30 + self.y_off))
+        # (左下(x,y),左上(x,y),右上(x,y),右下(x,y))
+
+        l_move = self.x_off - 50
+        r_move = self.x_off + 60
+        m_move = self.x_off + 20
+        mouse_he = 120
+
+        self.vertices_left   = ((l_move, 30 + self.y_off), (l_move, mouse_he + self.y_off), (l_move + 60, mouse_he + self.y_off), (l_move + 60, 30 + self.y_off))
+        self.vertices_right  = ((r_move, 30 + self.y_off), (r_move, mouse_he + self.y_off), (r_move + 60, mouse_he + self.y_off), (r_move + 60, 30 + self.y_off))
+
+        self.vertices_middle = ((m_move, 60 + self.y_off), (m_move, mouse_he + self.y_off), (m_move + 30, mouse_he + self.y_off), (m_move + 30, 60 + self.y_off))
+
+
         self.shader = gpu.shader.from_builtin('2D_UNIFORM_COLOR')
 
         self.batch_left_button   = batch_for_shader(self.shader, 'TRIS', {"pos" : self.vertices_left},   indices = self.indices)
@@ -42,20 +52,20 @@ class SCV_Draw_Util:
             return self.color_active
         else:
             return self.color
-    
+
     def __set_color(self, key_state):
         self.shader.uniform_float("color", self.__get_color(key_state))
-    
+
     def draw_buttons(self, left, middle, right):
-        
+
         self.shader.bind()
-        
+
         self.__set_color(left)
-        
+
         self.batch_left_button.draw(self.shader)
-        
+
         self.__set_color(middle)
         self.batch_middle_button.draw(self.shader)
-        
+
         self.__set_color(right)
         self.batch_right_button.draw(self.shader)

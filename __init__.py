@@ -2,7 +2,7 @@ bl_info = {
     "name": "Shortcut VUr",
     "description": "Shortcut display addon",
     "author": "Jayanam",
-    "version": (0, 7, 3, 0),
+    "version": (0, 7, 2, 0),
     "blender": (2, 80, 0),
     "location": "View3D",
     "category": "Object"}
@@ -26,11 +26,11 @@ h_dock = [ ("0",  "Left",  "Dock to the left side"),
          ]
 
 bpy.types.Scene.h_dock = bpy.props.EnumProperty(
-    items = h_dock, name="Dock", 
-    description="Dock to left or right side", 
-    default="1")
+    items = h_dock, name="Dock",
+    description="Dock to left or right side",
+    default="2")
 
-bpy.types.Scene.font_color = bpy.props.FloatVectorProperty(  
+bpy.types.Scene.font_color = bpy.props.FloatVectorProperty(
    name="Text Color",
    subtype='COLOR',
    default=(1.0, 1.0, 1.0),
@@ -38,18 +38,18 @@ bpy.types.Scene.font_color = bpy.props.FloatVectorProperty(
    description="Color for the text"
    )
 
-bpy.types.Scene.color_buttons = bpy.props.FloatVectorProperty(  
+bpy.types.Scene.color_buttons = bpy.props.FloatVectorProperty(
    name="Color Buttons",
    subtype='COLOR',
-   default=(0.1, 0.1, 0.1),
+   default=(0.1, 0.1, 0.1, 0.5), size=4,
    min=0.0, max=1.0,
    description="Color for mouse buttons"
    )
 
-bpy.types.Scene.color_buttons_active = bpy.props.FloatVectorProperty(  
+bpy.types.Scene.color_buttons_active = bpy.props.FloatVectorProperty(
    name="Color Buttons active",
    subtype='COLOR',
-   default=(1.0, 1.0, 1.0),
+   default=(1.0, 1.0, 1.0, 1.0), size=4,
    min=0.0, max=1.0,
    description="Color for mouse active buttons"
    )
@@ -57,6 +57,6 @@ bpy.types.Scene.color_buttons_active = bpy.props.FloatVectorProperty(
 classes = ( SCV_OT_draw_operator, SCV_PT_panel )
 
 register, unregister = bpy.utils.register_classes_factory(classes)
-    
+
 if __name__ == "__main__":
     register()

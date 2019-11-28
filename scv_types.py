@@ -12,8 +12,8 @@ class SCV_Key_Input:
         self.key = ''
         self.detect_times = 0
         self.timestamp = time.time()
-        
-    def input(self, event):    
+
+    def input(self, event):
 
         if self.is_same(event):
             self.detect_times += 1
@@ -31,50 +31,81 @@ class SCV_Key_Input:
                 self.is_alt   == event.alt   and
                 self.is_shift == event.shift and
                 self.key == event.type)
-          
+
     def __str__(self):
         result = []
-        
+
         if(self.is_shift):
-            result.append("Shift")
-            
+            result.append("Shift +")
+
         if(self.is_ctrl):
-            result.append("Ctrl")
-            
+            result.append("Ctrl +")
+
         if(self.is_alt):
-            result.append("Alt")
-                    
-        if(self.key != ''):
+            result.append("Alt +")
+
+        if(self.key == 'ONE'):
+            result.append("1")
+
+        elif(self.key == 'TWO'):
+            result.append("2")
+
+        elif(self.key == 'THREE'):
+            result.append("3")
+
+        elif(self.key == 'FOUR'):
+            result.append("4")
+
+        elif(self.key == 'FIVE'):
+            result.append("5")
+
+        elif(self.key == 'SIX'):
+            result.append("6")
+
+        elif(self.key == 'SEVEN'):
+            result.append("7")
+
+        elif(self.key == 'EIGHT'):
+            result.append("8")
+
+        elif(self.key == 'NINE'):
+            result.append("9")
+
+        elif(self.key == 'ZERO'):
+            result.append("0")
+
+
+        elif(self.key != ''):
             result.append(self.key)
 
         if(len(result) > 0):
             if self.detect_times > 1:
-                result.append("x " + str(self.detect_times))
+                    result.append("x " + str(self.detect_times - 1))
 
-            return " ".join(result)                  
-        
+            return " ".join(result)
+
         return ''
-        
+
 class SCV_Mouse_Input:
 
     def __init__(self):
         self.clear()
-    
+
     def clear(self):
         self.is_left   = False
         self.is_middle = False
         self.is_right  = False
-        
+
     def input(self, event):
-        
+
         self.clear()
         if(event.type == 'LEFTMOUSE'):
             self.is_left = event.value == 'PRESS'
         if(event.type == 'MIDDLEMOUSE'):
-            self.is_middle = event.value == 'PRESS'  
+            self.is_middle = event.value == 'PRESS'
         if(event.type == 'RIGHTMOUSE'):
-            self.is_right = event.value == 'PRESS'            
-        
+            self.is_right = event.value == 'PRESS'
+
     def __str__(self):
         result = ""
         result = result + "left: "  + str(self.is_left) + ", "
